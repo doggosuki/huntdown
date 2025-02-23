@@ -330,7 +330,7 @@ namespace Huntdown
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Giant Size Upgraded Mission Enabled",
                 DefaultValue = true,
-                Description = new ConfigDescription("Whether the Giant Size: Upgraded can be assigned as the hunt target or not.")
+                Description = new ConfigDescription("Whether the Giant Size: Upgraded (1 big random enemy) can be assigned as the hunt target or not.")
             },
 
             new ConfigurableSetting
@@ -338,8 +338,8 @@ namespace Huntdown
                 Index = ConfigIndexes.ToggleLittleEnemies,
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Big Trouble Little Enemies Mission Enabled",
-                DefaultValue = false,
-                Description = new ConfigDescription("Whether the Big Trouble Little Enemies can be assigned as the hunt target or not.")
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Big Trouble Little Enemies (15 random tiny enemies) can be assigned as the hunt target or not.")
             },
 
             new ConfigurableSetting

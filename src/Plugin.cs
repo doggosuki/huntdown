@@ -23,7 +23,7 @@ namespace Huntdown
     {
         private const string _modGUID = "doggosuki.Huntdown";
         private const string _modName = "Huntdown";
-        private const string _modVersion = "1.6.1";
+        private const string _modVersion = "1.6.2";
 
         private readonly Harmony _harmony = new Harmony(_modGUID);
         public static Huntdown _instance;

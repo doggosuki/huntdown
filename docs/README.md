@@ -54,4 +54,6 @@ Your mission will be displayed to all members of your team in the chat once you 
 
 **If you find any bugs, please report them here on the Lethal Company Modding discord:** https://discord.com/channels/1168655651455639582/1187785667833511996
 
+**Github:** https://github.com/doggosuki/huntdown
+
 Thank you to amnsoft/Adam for making the EmployeeAssignments mod, which this mod was heavily inspired by. Check it out here: https://thunderstore.io/c/lethal-company/p/amnsoft/EmployeeAssignments/

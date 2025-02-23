@@ -1,9 +1,9 @@
 {
     "name": "Huntdown",
-    "version_number": "1.6.0",
-    "website_url":  "",
+    "version_number": "1.6.1",
+    "website_url": "https://github.com/doggosuki/huntdown",
     "description": "Each day a mission is given to hunt down a specific monster, which drops a scrap reward when hunted. Missions are configurable and toggleable.",
     "dependencies": [
-      "BepInEx-BepInExPack-5.4.2100"
+        "BepInEx-BepInExPack-5.4.2100"
     ]
 }

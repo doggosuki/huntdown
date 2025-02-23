@@ -23,7 +23,7 @@ namespace Huntdown
     {
         private const string _modGUID = "doggosuki.Huntdown";
         private const string _modName = "Huntdown";
-        private const string _modVersion = "1.6.0";
+        private const string _modVersion = "1.6.1";
 
         private readonly Harmony _harmony = new Harmony(_modGUID);
         public static Huntdown _instance;
@@ -614,7 +614,7 @@ namespace Huntdown
                             (EnemyKey.ForestKeeper, 1)
                         ),
                         ConfigIndexes.ToggleFacilityKeeper,
-                        _possibleRewardPools[(int)RewardPoolKey.LargeRewardPool]
+                        _possibleRewardPools[(int)RewardPoolKey.HugeRewardPool]
                     ),
                 };
 

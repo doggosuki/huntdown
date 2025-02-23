@@ -338,7 +338,7 @@ namespace Huntdown
                 Index = ConfigIndexes.ToggleLittleEnemies,
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Big Trouble Little Enemies Mission Enabled",
-                DefaultValue = true,
+                DefaultValue = false,
                 Description = new ConfigDescription("Whether the Big Trouble Little Enemies can be assigned as the hunt target or not.")
             },
 
@@ -574,7 +574,7 @@ namespace Huntdown
                 Index = ConfigIndexes.WeightGiantSize,
                 Section = ConfigSections.Weight.GetDescription(),
                 Key = "Giant Size Upgraded Mission Weight",
-                DefaultValue = 20,
+                DefaultValue = 5,
                 Description = new ConfigDescription("Higher value = more likely. The likelihood that the Giant Size: Upgraded will be the target.")
             },
 
@@ -583,7 +583,7 @@ namespace Huntdown
                 Index = ConfigIndexes.WeightLittleEnemies,
                 Section = ConfigSections.Weight.GetDescription(),
                 Key = "Big Trouble Little Enemies Mission Weight",
-                DefaultValue = 20,
+                DefaultValue = 5,
                 Description = new ConfigDescription("Higher value = more likely. The likelihood that the Big Trouble Little Enemies will be the target.")
             },
 
@@ -592,7 +592,7 @@ namespace Huntdown
                 Index = ConfigIndexes.WeightPuppies,
                 Section = ConfigSections.Weight.GetDescription(),
                 Key = "Who let the puppies out Mission Weight",
-                DefaultValue = 20,
+                DefaultValue = 5,
                 Description = new ConfigDescription("Higher value = more likely. The likelihood that the Who let the puppies out? will be the target.")
             },
 
@@ -610,7 +610,7 @@ namespace Huntdown
                 Index = ConfigIndexes.WeightFacilityKeeper,
                 Section = ConfigSections.Weight.GetDescription(),
                 Key = "Facility Keeper Mission Weight",
-                DefaultValue = 25,
+                DefaultValue = 15,
                 Description = new ConfigDescription("Higher value = more likely. The likelihood that the Facility Keeper will be the target.")
             },
 

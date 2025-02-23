@@ -1,3 +1,9 @@
+### 1.6.1
+- Made mission "Big Trouble Little Enemies" be disabled by default (for now) due to weird issues with unnatural enemies like masked
+- Reduced default weight of "Giant Size: Upgraded", "Big Trouble Little Enemies", "Facility Keeper" and "Who let the puppies out?"
+- Moved mission "Facility Keeper" to "Extreme" mission reward pool
+- Added back Github link to README
+
 ### 1.6.0
 - Added option to turn on/off tool mission rewards (tools from other supported mods are included in list)
 - Added option to use subText of target scan node instead of headerText. For example instead of replacing "Snare Flea" title, it will put "TARGET" label below it instead

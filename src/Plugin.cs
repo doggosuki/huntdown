@@ -13,17 +13,20 @@ namespace Huntdown
     [BepInPlugin(_modGUID, _modName, _modVersion)]
     [BepInDependency("evaisa.lethalthings", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("LethalCompanyHarpGhost", BepInDependency.DependencyFlags.SoftDependency)]
+
     // Why does Aloe has its own spawning logic???
     //[BepInDependency("com.github.biodiversitylc.Biodiversity", BepInDependency.DependencyFlags.SoftDependency)]
+
     // Cant seem to make balls spawnable in reward pools :(
     //[BepInDependency("LethalMon", BepInDependency.DependencyFlags.SoftDependency)]
+
     [BepInDependency("Jordo.NeedyCats", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("Theronguard.EmergencyDice", BepInDependency.DependencyFlags.SoftDependency)]
     public class Huntdown : BaseUnityPlugin
     {
         private const string _modGUID = "doggosuki.Huntdown";
         private const string _modName = "Huntdown";
-        private const string _modVersion = "1.6.2";
+        private const string _modVersion = "1.6.3";
 
         private readonly Harmony _harmony = new Harmony(_modGUID);
         public static Huntdown _instance;

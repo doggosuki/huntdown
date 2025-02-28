@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,6 +14,10 @@ namespace Huntdown.Patches
     [HarmonyPatch(typeof(RoundManager))]
     internal class RoundManagerPatch
     {
+        private static GameObject _cruiserPrefab;  // Store the prefab
+        private static GameObject _secondaryCruiserPrefab; // Secondary object, i.e. light
+        private static bool _cruiserSpawnAttempted = false;
+
         public static int CalculateTotalWeight()
         {
             _logger.LogInfo("Calculating total weight of all missions...");
@@ -81,6 +86,8 @@ namespace Huntdown.Patches
             {
                 _currentMission.End();
             }
+
+            LoadCruiserPrefab(); // Load the prefab ONCE
         }
 
         // Called after the vanilla game begins spawning enemies, intended to spawn the hunt target
@@ -94,7 +101,7 @@ namespace Huntdown.Patches
                 _currentMission = null;
                 return;
             }
-            
+
             //enemyAIList.Clear();
 
             TotalWeight = CalculateTotalWeight();
@@ -161,7 +168,7 @@ namespace Huntdown.Patches
                         {
                             _lastEnemyKilled = AliveEnemies[i];
                             AliveEnemies.RemoveAt(i);
-                            HUDManager.Instance.AddTextToChatOnServer("(" + (_maxEnemies - AliveEnemies.Count) + "/" + _maxEnemies + ") <color=purple>TARGETS TERMINATED</color>") ;
+                            HUDManager.Instance.AddTextToChatOnServer("(" + (_maxEnemies - AliveEnemies.Count) + "/" + _maxEnemies + ") <color=purple>TARGETS TERMINATED</color>");
                             _logger.LogInfo("The mission enemy '" + _lastEnemyKilled.name + "' was killed.");
                         }
                         catch (Exception ex)
@@ -186,63 +193,112 @@ namespace Huntdown.Patches
                         _terminalNode.displayText = "You have the 'display target' setting off in your configuration, so your mission cannot be displayed using this command.";
                     }
 
-                    var rand = new System.Random();
-                    int x = rand.Next(0, _currentMission.RewardPool.Rewards.Count);
-                    StoredItem reward = _currentMission.RewardPool.Rewards[x];
 
-                    GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilled.serverPosition, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
-                    GrabbableObject grabbableObj = obj.GetComponent<GrabbableObject>();
-                    grabbableObj.transform.rotation = Quaternion.Euler(grabbableObj.itemProperties.restingRotation);
-                    grabbableObj.fallTime = 0f;
+                    _cruiserSpawnAttempted = false; // Reset flag
 
-                    var rand2 = new System.Random();
-                    int y = rand.Next(0, 11) - 5;
+                    bool cruiserEnabled = (bool)ConfigEntries[(int)ConfigIndexes.CruiserRewardEnabled].BoxedValue;
+                    int cruiserChance = (int)ConfigEntries[(int)ConfigIndexes.CruiserRewardChance].BoxedValue;
 
-                    if (reward.GameItem.isScrap)
+                    // Create a list of allowed mission names.  Add/remove names as needed.
+                    List<string> allowedMissionNames = new List<string>()
                     {
-                        if (_currentMission.RewardPool.Value + y > 0)
+                        "Bug Mafia",
+                        "Infestation",
+                        "Bunker Spider",
+                        "Bracken",
+                        "Thumper",
+                        "Nutcracker",
+                        "Masked",
+                        "Blunderbug",
+                        "Butler",
+                        "Stabbin' Bros",
+                        "Baboon Gang",
+                        "Zombie",
+                        "Haunted Harpist",
+                        "Phantom Piper",
+                        "Enforcer",
+                    };
+
+                    // Check if the current mission's name is in the allowed list.
+                    bool isMissionAllowed = allowedMissionNames.Contains(_currentMission.Name);
+
+                    // Use the config values AND the mission name check
+                    var rand = new System.Random();
+                    int chanceRoll = rand.Next(100);  // 0-99
+                    _logger.LogInfo("Reward chance roll: " + chanceRoll);
+
+                    // Only proceed if the mission is allowed, cruiser is enabled, AND the chance roll succeeds
+                    if (isMissionAllowed && cruiserEnabled && chanceRoll < cruiserChance && !_cruiserSpawnAttempted)
+                    {
+                        _cruiserSpawnAttempted = true; // Set the flag *inside* the if
+                        _logger.LogInfo("Attempting to spawn reward cruiser");
+                        StartOfRound sor = UnityEngine.Object.FindObjectOfType<StartOfRound>();
+                        if (sor != null)
                         {
-                            grabbableObj.SetScrapValue(_currentMission.RewardPool.Value + y);
+                            AnimatedObjectTrigger magnetLever = null;
+                            AnimatedObjectTrigger[] triggers = UnityEngine.Object.FindObjectsOfType<AnimatedObjectTrigger>();
+                            foreach (AnimatedObjectTrigger trigger in triggers)
+                            {
+                                if (trigger.gameObject.name.Contains("MagnetLever")) //Best way to find correct trigger
+                                {
+                                    magnetLever = trigger;
+                                    break; // Exit the loop once found
+                                }
+                            }
+
+                            if (magnetLever != null && !sor.magnetOn)
+                            {
+                                _logger.LogInfo("Magnet is off, turning it on for Cruiser reward.");
+                                magnetLever.TriggerAnimation(sor.localPlayerController); // Turn on the magnet
+                            }
+
+                            // Simplified magnet check.  We just need to know if *anything* is attached.
+                            bool isMagnetOccupied = sor.isObjectAttachedToMagnet;
+
+                            // Get the magnetPoint transform.
+                            Transform magnetPoint = sor.magnetPoint;
+
+                            if (!isMagnetOccupied && magnetPoint != null)
+                            {
+                                // Spawn the Cruiser (adapted from VehicleSpawnPatch)
+                                if (_cruiserPrefab != null)
+                                {
+                                    _logger.LogInfo("Spawning reward.");
+                                    GameObject cruiserInstance = UnityEngine.Object.Instantiate(_cruiserPrefab, magnetPoint.position, Quaternion.Euler(0, -90, 0), RoundManager.Instance.VehiclesContainer);
+                                    NetworkObject netObj = cruiserInstance.GetComponent<NetworkObject>();
+                                    netObj.Spawn();
+
+                                    //Dont forget to spawn secondary prefab, aka light
+                                    GameObject secondaryInstance = UnityEngine.Object.Instantiate(_secondaryCruiserPrefab, magnetPoint.position, Quaternion.Euler(0, -90, 0), RoundManager.Instance.VehiclesContainer);
+                                    NetworkObject netObj2 = secondaryInstance.GetComponent<NetworkObject>();
+                                    netObj2.Spawn();
+
+                                    HUDManager.Instance.AddTextToChatOnServer("<color=purple>MISSION COMPLETED</color>\n<color=green>REWARD: </color>" + "<color=white>Cruiser</color>");
+                                    // Reset flags for next mission
+                                }
+                                else
+                                {
+                                    _logger.LogError("Cruiser prefab not found for reward spawn!");
+                                }
+                            }
+                            else
+                            {
+                                _logger.LogInfo("Magnet was occupied, not spawning reward!");
+                                // No reward this time.
+                                //Spawn normal reward that is inside of mission object
+                                SpawnMissionReward(rand);
+                            }
                         }
                         else
                         {
-                            grabbableObj.SetScrapValue(_currentMission.RewardPool.Value);
+                            _logger.LogError("Start of round instance not found!");
                         }
                     }
-
-                    try
+                    else
                     {
-                        NetworkObject netObj = obj.GetComponent<NetworkObject>();
-                        netObj.Spawn();
-
-                        HUDManager.Instance.AddTextToChatOnServer("<color=purple>MISSION COMPLETED</color>\n<color=green>REWARD: </color>" + "<color=white>" + reward.Name + "</color>");
-
-                        if (reward.GameItem.isScrap)
-                        {
-                            int resultBefore = 0;
-                            Array.ForEach(_allScrapValue, value => resultBefore += value);
-                            _logger.LogInfo("Value of total scrap before correction: " + resultBefore);
-
-                            _logger.LogInfo("Length of AllScrapNetwork array: " + _allScrapNetwork.Length);
-                            NetworkObjectReference[] correctedScrapNetworkArray = new NetworkObjectReference[_allScrapNetwork.Length + 1];
-                            _logger.LogInfo("Length of correctedScrapNetworkArray array: " + correctedScrapNetworkArray.Length);
-                            _allScrapNetwork.CopyTo(correctedScrapNetworkArray, 0);
-                            correctedScrapNetworkArray[_allScrapNetwork.Length] = netObj;
-                            int[] correctedScrapArray = new int[_allScrapValue.Length + 1];
-                            _allScrapValue.CopyTo(correctedScrapArray, 0);
-                            correctedScrapArray[_allScrapValue.Length] = grabbableObj.scrapValue;
-
-                            _logger.LogInfo("Attempting to sync server and client scrap values.");
-                            RoundManager.Instance.SyncScrapValuesClientRpc(correctedScrapNetworkArray, correctedScrapArray);
-
-                            int resultAfter = 0;
-                            Array.ForEach(correctedScrapArray, value => resultAfter += value);
-                            _logger.LogInfo("Value of total scrap after correction: " + resultAfter);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError("Calculation of new total scrap in level failed.\n" + ex.Message);
+                        //Normal, non-cruiser reward
+                        _logger.LogInfo("Not spawning cruiser, spawning default reward");
+                        SpawnMissionReward(rand);
                     }
 
                     _currentMission.End();
@@ -267,6 +323,88 @@ namespace Huntdown.Patches
 
             // Scrap on client
             _allScrapValue = scrapValues;
+        }
+
+        public static void LoadCruiserPrefab()
+        {
+            if (!_cruiserPrefab)
+            {
+                Terminal term = UnityEngine.Object.FindObjectOfType<Terminal>();
+                if (term == null) { _logger.LogWarning("Couldnt find terminal, not setting up cruiser prefabs for potential reward!"); return; };
+
+                foreach (BuyableVehicle vehicle in term.buyableVehicles)
+                {
+                    if (vehicle.vehicleDisplayName == "Cruiser")
+                    {
+                        _cruiserPrefab = vehicle.vehiclePrefab;
+                        _secondaryCruiserPrefab = vehicle.secondaryPrefab;
+                        _logger.LogInfo("Loaded up " + vehicle.vehicleDisplayName + " prefab.");
+                        return;
+                    }
+                }
+                _logger.LogWarning("Couldnt find any vehicle prefabs in the terminal named Cruiser!");
+            }
+        }
+
+        private static void SpawnMissionReward(System.Random rand)
+        {
+            int x = rand.Next(0, _currentMission.RewardPool.Rewards.Count);
+            StoredItem reward = _currentMission.RewardPool.Rewards[x];
+
+            GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilled.serverPosition, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
+            GrabbableObject grabbableObj = obj.GetComponent<GrabbableObject>();
+            grabbableObj.transform.rotation = Quaternion.Euler(grabbableObj.itemProperties.restingRotation);
+            grabbableObj.fallTime = 0f;
+
+            var rand2 = new System.Random();
+            int y = rand.Next(0, 11) - 5;
+
+            if (reward.GameItem.isScrap)
+            {
+                if (_currentMission.RewardPool.Value + y > 0)
+                {
+                    grabbableObj.SetScrapValue(_currentMission.RewardPool.Value + y);
+                }
+                else
+                {
+                    grabbableObj.SetScrapValue(_currentMission.RewardPool.Value);
+                }
+            }
+
+            try
+            {
+                NetworkObject netObj = obj.GetComponent<NetworkObject>();
+                netObj.Spawn();
+
+                HUDManager.Instance.AddTextToChatOnServer("<color=purple>MISSION COMPLETED</color>\n<color=green>REWARD: </color>" + "<color=white>" + reward.Name + "</color>");
+
+                if (reward.GameItem.isScrap)
+                {
+                    int resultBefore = 0;
+                    Array.ForEach(_allScrapValue, value => resultBefore += value);
+                    _logger.LogInfo("Value of total scrap before correction: " + resultBefore);
+
+                    _logger.LogInfo("Length of AllScrapNetwork array: " + _allScrapNetwork.Length);
+                    NetworkObjectReference[] correctedScrapNetworkArray = new NetworkObjectReference[_allScrapNetwork.Length + 1];
+                    _logger.LogInfo("Length of correctedScrapNetworkArray array: " + correctedScrapNetworkArray.Length);
+                    _allScrapNetwork.CopyTo(correctedScrapNetworkArray, 0);
+                    correctedScrapNetworkArray[_allScrapNetwork.Length] = netObj;
+                    int[] correctedScrapArray = new int[_allScrapValue.Length + 1];
+                    _allScrapValue.CopyTo(correctedScrapArray, 0);
+                    correctedScrapArray[_allScrapValue.Length] = grabbableObj.scrapValue;
+
+                    _logger.LogInfo("Attempting to sync server and client scrap values.");
+                    RoundManager.Instance.SyncScrapValuesClientRpc(correctedScrapNetworkArray, correctedScrapArray);
+
+                    int resultAfter = 0;
+                    Array.ForEach(correctedScrapArray, value => resultAfter += value);
+                    _logger.LogInfo("Value of total scrap after correction: " + resultAfter);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Calculation of new total scrap in level failed.\n" + ex.Message);
+            }
         }
     }
 }

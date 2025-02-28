@@ -1,3 +1,6 @@
+### 1.6.3
+- Company Cruiser can now be mission reward (Medium and Hard Difficulty missions. Can be disabled in config. Chance can be adjusted in config). It can only spawn if nothing is attached to the magnet, otherwise it will be a random scrap
+
 ### 1.6.2
 - Fixed weird bug where missions would only have a single enemy spawn instead of the intended amount when the enemy was unnatural for the current moon (e.g., Masked on Experimentation). This also fixed the target counter displaying negative values (e.g., "-3/-3" instead of "4/4").
 - Re-enabled mission "Big Trouble Little Enemies" due to unnatural enemies bug fixed

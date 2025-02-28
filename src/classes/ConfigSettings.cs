@@ -6,22 +6,6 @@ using System.Reflection;
 
 namespace Huntdown
 {
-    public enum GeneralConfigKey
-    {
-        DisplayTarget,
-        GeneralPercentageChance,
-        ToggleWeightDynamic,
-        ChangeSubtext
-    }
-
-    public enum RewardConfigKey
-    {
-        RewardLow,
-        RewardMedium,
-        RewardHigh,
-        RewardExtreme
-    }
-
     public static class ConfigSettings
     {
         private static string GetDescription(this Enum value)
@@ -69,7 +53,6 @@ namespace Huntdown
             GeneralPercentageChance,
             ToggleWeightDynamic,
             ChangeSubtext,
-            EnableToolRewards,
 
             ///////////////////////////////////////////////////////
 
@@ -137,7 +120,11 @@ namespace Huntdown
             RewardMedium,
             RewardHigh,
             RewardExtreme,
-            RewardBrutal
+            RewardBrutal,
+
+            EnableToolRewards,
+            CruiserRewardEnabled,
+            CruiserRewardChance,
         }
 
         public static readonly ConfigurableSetting[] AllConfigurableSettings = new ConfigurableSetting[]
@@ -178,14 +165,6 @@ namespace Huntdown
                 Description = new ConfigDescription("If true, changes the ScanNode's subText instead of headerText for 'TARGET' label.")
             },
 
-            new ConfigurableSetting
-            {
-                Index = ConfigIndexes.EnableToolRewards,
-                Section = ConfigSections.General.GetDescription(),
-                Key = "Enable Tool Rewards",
-                DefaultValue = true,
-                Description = new ConfigDescription("If true, tool items will be included in reward pools.")
-            },
 
             ///////////////////////////////////////////////////////
 
@@ -723,6 +702,34 @@ namespace Huntdown
                 DefaultValue = 400,
                 Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Giant Size: Upgraded, Big Trouble Little Enemies, Who let the puppies out?, Zombie Apocalypse).")
             },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.EnableToolRewards,
+                Section = ConfigSections.Reward.GetDescription(),
+                Key = "Enable Tool Rewards",
+                DefaultValue = true,
+                Description = new ConfigDescription("If true, tool items will be included in reward pools.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.CruiserRewardEnabled,
+                Section = ConfigSections.Reward.GetDescription(),
+                Key = "Cruiser Reward Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("If true, the Cruiser can appear as a mission reward.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.CruiserRewardChance,
+                Section = ConfigSections.Reward.GetDescription(),
+                Key = "Cruiser Reward Chance",
+                DefaultValue = 5,
+                Description = new ConfigDescription("The percentage chance (0-100) of the Cruiser appearing as a reward.", new AcceptableValueRange<int>(0, 100))
+            },
+
         };
 
         public static ConfigEntryBase[] ConfigEntries = new ConfigEntryBase[AllConfigurableSettings.Length];

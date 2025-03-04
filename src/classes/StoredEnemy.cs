@@ -22,6 +22,8 @@ namespace Huntdown
         EnforcerGhost,
         ManorLord,
         Janitor,
+        BellCrab,
+        Boomba,
         Random,
     }
 

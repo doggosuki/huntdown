@@ -23,6 +23,7 @@ namespace Huntdown
     [BepInDependency("Jordo.NeedyCats", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("Theronguard.EmergencyDice", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("CodeRebirth", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("Surfaced", BepInDependency.DependencyFlags.SoftDependency)]
     public class Huntdown : BaseUnityPlugin
     {
         private const string _modGUID = "doggosuki.Huntdown";
@@ -62,6 +63,7 @@ namespace Huntdown
         //public static bool lethalMonPresent = false;
         public static bool emergencyDicePresent = false;
         public static bool codeRebirthPresent = false;
+        public static bool surfacedPresent = false;
 
         Dictionary<EnemyKey, int> CreateEnemyDictionary(params (EnemyKey key, int value)[] keyValuePairs)
         {
@@ -147,6 +149,12 @@ namespace Huntdown
                 _logger.LogInfo("Code Rebirth detected.  More missions will be available.");
             }
 
+            surfacedPresent = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("Surfaced");
+            if (surfacedPresent)
+            {
+                _logger.LogInfo("Surfaced detected.  Bell Crab mission will be available.");
+            }
+
             try
             {
                 _logger.LogInfo("Binding configs.");
@@ -181,6 +189,8 @@ namespace Huntdown
                     new StoredEnemy(EnemyKey.EnforcerGhost, "EnforcerGhost (EnemyType)"),
                     new StoredEnemy(EnemyKey.ManorLord, "ManorLordObj (EnemyType)"),
                     new StoredEnemy(EnemyKey.Janitor, "JanitorObj (EnemyType)"),
+                    new StoredEnemy(EnemyKey.BellCrab, "BellCrabAsset (EnemyType)"),
+                    new StoredEnemy(EnemyKey.Boomba, "Boomba (EnemyType)"),
                 };
                 _logger.LogInfo("Keys successfully assigned to enemies.");
             }
@@ -652,6 +662,22 @@ namespace Huntdown
                     ),
 
                     CreateMission(
+                        "Boomba",
+                        ConfigIndexes.WeightBoomba,
+                        CreateEnemyDictionary((EnemyKey.Boomba, 1)),
+                        lethalThingsPresent ? (bool)ConfigEntries[(int)ConfigIndexes.ToggleBoomba].BoxedValue : false,
+                        _possibleRewardPools[(int)RewardPoolKey.SmallRewardPool]
+                    ),
+
+                    CreateMission(
+                        "Boombopocalypse",
+                        ConfigIndexes.WeightBoombopocalypse,
+                        CreateEnemyDictionary((EnemyKey.Boomba, 15)),
+                        lethalThingsPresent ? (bool)ConfigEntries[(int)ConfigIndexes.ToggleBoombopocalypse].BoxedValue : false,
+                        _possibleRewardPools[(int)RewardPoolKey.HugeRewardPool]
+                    ),
+
+                    CreateMission(
                         "Haunted Harpist",
                         ConfigIndexes.WeightHauntedHarpist,
                         CreateEnemyDictionary((EnemyKey.HauntedHarpist, 1)),
@@ -705,7 +731,15 @@ namespace Huntdown
                         CreateEnemyDictionary((EnemyKey.Janitor, 1), (EnemyKey.Butler, 1)),
                         codeRebirthPresent ? (bool)ConfigEntries[(int)ConfigIndexes.ToggleRivals].BoxedValue : false,
                         _possibleRewardPools[(int)RewardPoolKey.LargeRewardPool]
-                    )
+                    ),
+
+                    CreateMission(
+                        "Bell Crab",
+                        ConfigIndexes.WeightBellCrab,
+                        CreateEnemyDictionary((EnemyKey.BellCrab, 1)),
+                        surfacedPresent ? (bool)ConfigEntries[(int)ConfigIndexes.ToggleBellCrab].BoxedValue : false,
+                        _possibleRewardPools[(int)RewardPoolKey.SmallRewardPool]
+                    ),
                 };
 
                 _possibleMissions = missionsList.ToArray();

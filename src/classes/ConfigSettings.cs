@@ -79,6 +79,8 @@ namespace Huntdown
             ToggleZombie,
             ToggleZombieCrew,
             ToggleZombieApocalypse,
+            ToggleBoomba,
+            ToggleBoombopocalypse,
             ToggleHauntedHarpist,
             TogglePhantomPiper,
             ToggleEnforcerGhost,
@@ -86,6 +88,7 @@ namespace Huntdown
             ToggleManorLord,
             ToggleJanitor,
             ToggleRivals,
+            ToggleBellCrab,
 
             ///////////////////////////////////////////////////////
 
@@ -112,6 +115,8 @@ namespace Huntdown
             WeightZombie,
             WeightZombieCrew,
             WeightZombieApocalypse,
+            WeightBoomba,
+            WeightBoombopocalypse,
             WeightHauntedHarpist,
             WeightPhantomPiper,
             WeightEnforcerGhost,
@@ -119,6 +124,7 @@ namespace Huntdown
             WeightManorLord,
             WeightJanitor,
             WeightRivals,
+            WeightBellCrab,
 
             ///////////////////////////////////////////////////////
 
@@ -383,6 +389,24 @@ namespace Huntdown
 
             new ConfigurableSetting
             {
+                Index = ConfigIndexes.ToggleBoomba,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Boomba Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if LethalThings mod is present.) Whether the Boomba can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleBoombopocalypse,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Boombopocalypse Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if LethalThings mod is present.) Whether the Boombopocalypse (15 Boombas) can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
                 Index = ConfigIndexes.ToggleHauntedHarpist,
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Haunted Harpist Mission Enabled",
@@ -442,6 +466,15 @@ namespace Huntdown
                 Key = "Cleaner Rivals Mission Enabled",
                 DefaultValue = true,
                 Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Whether the Cleaner Rivals can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleBellCrab,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Bell Crab Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if Surfaced mod is present.) Whether the Bell Crab can be assigned as the hunt target or not.")
             },
 
             ///////////////////////////////////////////////////////
@@ -655,6 +688,24 @@ namespace Huntdown
 
             new ConfigurableSetting
             {
+                Index = ConfigIndexes.WeightBoomba,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Boomba Mission Weight",
+                DefaultValue = 75,
+                Description = new ConfigDescription("(Will be target only if LethalThings mod is present.) Higher value = more likely. The likelihood that the Boomba will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightBoombopocalypse,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Boombopocalypse Mission Weight",
+                DefaultValue = 8,
+                Description = new ConfigDescription("(Will be target only if LethalThings mod is present.) Higher value = more likely. The likelihood that the Boombopocalypse will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
                 Index = ConfigIndexes.WeightHauntedHarpist,
                 Section = ConfigSections.Weight.GetDescription(),
                 Key = "Haunted Harpist Mission Weight",
@@ -716,6 +767,15 @@ namespace Huntdown
                 Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Higher value = more likely. The likelihood that the Cleaner Rivals will be the target.")
             },
 
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightBellCrab,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Bell Crab Mission Weight",
+                DefaultValue = 75,
+                Description = new ConfigDescription("(Will be target only if Surfaced mod is present.) Higher value = more likely. The likelihood that the Bell Crab will be the target.")
+            },
+
             ///////////////////////////////////////////////////////
 
             new ConfigurableSetting
@@ -724,7 +784,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Easy Mission Reward",
                 DefaultValue = 50,
-                Description = new ConfigDescription("How much the scrap dropped from an easy mission is worth (Snare Flea, Hoarding Bug).")
+                Description = new ConfigDescription("How much the scrap dropped from an easy mission is worth (Snare Flea, Hoarding Bug, Bell Crab).")
             },
 
             new ConfigurableSetting
@@ -733,7 +793,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Medium Mission Reward",
                 DefaultValue = 100,
-                Description = new ConfigDescription("How much the scrap dropped from a medium mission is worth (Thumper, Bunker Spider, Masked, Butler, Blunderbug, Zombie, Ethereal Enforcer, Haunted Harpist).")
+                Description = new ConfigDescription("How much the scrap dropped from a medium mission is worth (Thumper, Bunker Spider, Masked, Butler, Blunderbug, Zombie, Ethereal Enforcer, Haunted Harpist, Janitor).")
             },
 
             new ConfigurableSetting
@@ -742,7 +802,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Hard Mission Reward",
                 DefaultValue = 200,
-                Description = new ConfigDescription("How much the scrap dropped from a hard mission is worth (Bracken, Nutcracker, Bug Mafia, Infestation, Baboon Gang, Stabbin' Bros, Facility Keeper, Phantom Piper).")
+                Description = new ConfigDescription("How much the scrap dropped from a hard mission is worth (Bracken, Nutcracker, Bug Mafia, Infestation, Baboon Gang, Stabbin' Bros, Facility Keeper, Phantom Piper, Cleaner Rivals).")
             },
 
             new ConfigurableSetting
@@ -760,7 +820,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Brutal Mission Reward",
                 DefaultValue = 400,
-                Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Giant Size: Upgraded, Big Trouble Little Enemies, Who let the puppies out?, Zombie Apocalypse).")
+                Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Giant Size: Upgraded, Big Trouble Little Enemies, Who let the puppies out?, Zombie Apocalypse, The Manor Lord).")
             },
 
             new ConfigurableSetting

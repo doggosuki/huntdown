@@ -1,5 +1,8 @@
 ### 1.6.4
 - Added support for "CodeRebirth" mod, you will now be able to get new missions related to the new enemies from it: "The Manor Lord", "Janitor" and "Cleaner Rivals"
+- Added support for "Surfaced" mod, you will be able to get Bell Crab as mission target
+- Added 2 new LethalThings missions: "Boomba" and "Boombopocalypse"
+- Despawned mission targets will now be considered killed which will allow you to still get reward if you capture them with balls from LethalMon mod
 
 ### 1.6.3
 - Company Cruiser can now be mission reward (Medium and Hard Difficulty missions. Can be disabled in config. Chance can be adjusted in config). It can only spawn if nothing is attached to the magnet, otherwise it will be a random scrap

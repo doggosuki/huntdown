@@ -17,6 +17,8 @@ namespace Huntdown.Patches
         private static GameObject _cruiserPrefab;  // Store the prefab
         private static GameObject _secondaryCruiserPrefab; // Secondary object, i.e. light
         private static bool _cruiserSpawnAttempted = false;
+        private static Vector3 _lastEnemyKilledPosition; // Dynamically store position
+
 
         public static int CalculateTotalWeight()
         {
@@ -162,20 +164,40 @@ namespace Huntdown.Patches
                 for (int i = 0; i < AliveEnemies.Count; i++)
                 {
                     // If the current spawned enemy in the round which is being checked is the hunt target, and the hunt target is dead
-                    if (AliveEnemies[i].isEnemyDead)
+                    if (AliveEnemies[i] != null)  //Check for null FIRST
+                    {
+                        // Store the position *before* checking if it's dead.  Crucially important.
+                        _lastEnemyKilledPosition = AliveEnemies[i].transform.position;
+
+                        if (AliveEnemies[i].isEnemyDead)  // *Then* check if it's dead
+                        {
+                            try
+                            {
+                                _lastEnemyKilled = AliveEnemies[i]; //Still store last enemy for name logging
+                                AliveEnemies.RemoveAt(i);
+                                HUDManager.Instance.AddTextToChatOnServer("(" + (_maxEnemies - AliveEnemies.Count) + "/" + _maxEnemies + ") <color=purple>TARGETS TERMINATED</color>");
+                                _logger.LogInfo("The mission enemy '" + _lastEnemyKilled.name + "' was killed.");
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError("A mission enemy was killed, but there was an error.\n" + ex.Message);
+                            }
+                            break;
+                        }
+                    }
+                    else  //Handle null case. Remove and adjust loop index
                     {
                         try
                         {
-                            _lastEnemyKilled = AliveEnemies[i];
+                            //no enemy to log, it got destroyed
                             AliveEnemies.RemoveAt(i);
+                            i--; // Decrement i to account for removed element. Very important!
                             HUDManager.Instance.AddTextToChatOnServer("(" + (_maxEnemies - AliveEnemies.Count) + "/" + _maxEnemies + ") <color=purple>TARGETS TERMINATED</color>");
-                            _logger.LogInfo("The mission enemy '" + _lastEnemyKilled.name + "' was killed.");
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError("A mission enemy was killed, but there was an error.\n" + ex.Message);
+                            _logger.LogError("A mission enemy was destroyed, but there was an error.\n" + ex.Message);
                         }
-                        break;
                     }
                 }
 
@@ -217,6 +239,8 @@ namespace Huntdown.Patches
                         "Haunted Harpist",
                         "Phantom Piper",
                         "Enforcer",
+                        "Cleaner Rivals",
+                        "Janitor",
                     };
 
                     // Check if the current mission's name is in the allowed list.
@@ -351,7 +375,8 @@ namespace Huntdown.Patches
             int x = rand.Next(0, _currentMission.RewardPool.Rewards.Count);
             StoredItem reward = _currentMission.RewardPool.Rewards[x];
 
-            GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilled.transform.position, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
+            // Use the stored position
+            GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilledPosition, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
             GrabbableObject grabbableObj = obj.GetComponent<GrabbableObject>();
             grabbableObj.transform.rotation = Quaternion.Euler(grabbableObj.itemProperties.restingRotation);
             grabbableObj.fallTime = 0f;

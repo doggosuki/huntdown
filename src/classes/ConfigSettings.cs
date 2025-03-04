@@ -83,6 +83,9 @@ namespace Huntdown
             TogglePhantomPiper,
             ToggleEnforcerGhost,
             ToggleFiringSquad,
+            ToggleManorLord,
+            ToggleJanitor,
+            ToggleRivals,
 
             ///////////////////////////////////////////////////////
 
@@ -113,6 +116,9 @@ namespace Huntdown
             WeightPhantomPiper,
             WeightEnforcerGhost,
             WeightFiringSquad,
+            WeightManorLord,
+            WeightJanitor,
+            WeightRivals,
 
             ///////////////////////////////////////////////////////
 
@@ -411,6 +417,33 @@ namespace Huntdown
                 Description = new ConfigDescription("(Will be target only if Haunted Harpist mod is present.) Whether the The Firing Squad (4 Ethereal Enforcers and 1 Nutcracker) can be assigned as the hunt target or not.")
             },
 
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleManorLord,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Manor Lord Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Whether the Manor Lord can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleJanitor,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Janitor Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Whether the Janitor can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleRivals,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Cleaner Rivals Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Whether the Cleaner Rivals can be assigned as the hunt target or not.")
+            },
+
             ///////////////////////////////////////////////////////
 
             new ConfigurableSetting
@@ -654,6 +687,33 @@ namespace Huntdown
                 Key = "The Firing Squad Mission Weight",
                 DefaultValue = 30,
                 Description = new ConfigDescription("(Will be target only if Haunted Harpist mod is present.) Higher value = more likely. The likelihood that the The Firing Squad will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightManorLord,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Manor Lord Mission Weight",
+                DefaultValue = 5,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Higher value = more likely. The likelihood that the Manor Lord will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightJanitor,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Janitor Mission Weight",
+                DefaultValue = 60,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Higher value = more likely. The likelihood that the Janitor will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightRivals,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Cleaner Rivals Mission Weight",
+                DefaultValue = 40,
+                Description = new ConfigDescription("(Will be target only if Code Rebirth mod is present.) Higher value = more likely. The likelihood that the Cleaner Rivals will be the target.")
             },
 
             ///////////////////////////////////////////////////////

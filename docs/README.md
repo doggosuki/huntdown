@@ -35,13 +35,17 @@ Your mission will be displayed to all members of your team in the chat once you 
 - Haunted Harpist [(Haunted Harpist)](https://thunderstore.io/c/lethal-company/p/Bob123/Haunted_Harpist/)
 - Phantom Piper [(Haunted Harpist)](https://thunderstore.io/c/lethal-company/p/Bob123/Haunted_Harpist/)
 - Ethereal Enforcer [(Haunted Harpist)](https://thunderstore.io/c/lethal-company/p/Bob123/Haunted_Harpist/)
+- The Manor Lord [(CodeRebirth)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/CodeRebirth/)
+- Janitor [(CodeRebirth)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/CodeRebirth/)
 - <details><summary>Last Year's Interns (LethalThings) (Spoiler)</summary>Four Dead men coming to kill you</details>
 - <details><summary>Zombie Apocalypse (LethalThings) (Spoiler)</summary>A large army of 15 zombies</details>
 - <details><summary>The Firing Squad (Haunted Harpist) (Spoiler)</summary>A squad featuring 4 Ethereal Enforcers and a Nutcracker</details>
+- <details><summary>Cleaner Rivals (CodeRebirth) (Spoiler)</summary>A Butler and Janitor competing to clean facility the fastest. Will you interrupt them or let them do their job?</details>
 
 **Supported Mods that can add extra mission targets or mission rewards:**
 - <details><summary>LethalThings</summary>3 extra missions and bunch of new items for reward pools</details
 - <details><summary>Haunted Harpist</summary>4 extra missions and it's Ghost Plushie added to medium reward pool</details
+- <details><summary>CodeRebirth</summary>3 extra missions</details
 - <details><summary>Needy Cats</summary>You can get a random Cat as reward in "Hard", "Extreme" and "Brutal" mission targets</details
 - <details><summary>Emergency Dice Updated</summary>It's dices are added to reward pools</details
 

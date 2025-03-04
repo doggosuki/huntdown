@@ -20,8 +20,9 @@ namespace Huntdown
         HauntedHarpist,
         PhantomPiper,
         EnforcerGhost,
+        ManorLord,
+        Janitor,
         Random,
-        Aloe,
     }
 
     public class StoredEnemy

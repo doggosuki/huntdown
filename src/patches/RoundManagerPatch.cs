@@ -351,7 +351,7 @@ namespace Huntdown.Patches
             int x = rand.Next(0, _currentMission.RewardPool.Rewards.Count);
             StoredItem reward = _currentMission.RewardPool.Rewards[x];
 
-            GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilled.serverPosition, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
+            GameObject obj = Object.Instantiate(reward.GameItem.spawnPrefab, _lastEnemyKilled.transform.position, Quaternion.identity, RoundManager.Instance.spawnedScrapContainer);
             GrabbableObject grabbableObj = obj.GetComponent<GrabbableObject>();
             grabbableObj.transform.rotation = Quaternion.Euler(grabbableObj.itemProperties.restingRotation);
             grabbableObj.fallTime = 0f;

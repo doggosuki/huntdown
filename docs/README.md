@@ -38,6 +38,7 @@ Your mission will be displayed to all members of your team in the chat once you 
 - Ethereal Enforcer [(Haunted Harpist)](https://thunderstore.io/c/lethal-company/p/Bob123/Haunted_Harpist/)
 - The Manor Lord [(CodeRebirth)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/CodeRebirth/)
 - Janitor [(CodeRebirth)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/CodeRebirth/)
+- Bell Crab [(Surfaced)](https://thunderstore.io/c/lethal-company/p/SurfacedTeam/Surfaced/)
 - <details><summary>Last Year's Interns (LethalThings) (Spoiler)</summary>Four Dead men coming to kill you</details>
 - <details><summary>Zombie Apocalypse (LethalThings) (Spoiler)</summary>A large army of 15 zombies</details>
 - <details><summary>Boombopocalypse (LethalThings) (Spoiler)</summary>A large army of 15 Boombas</details>

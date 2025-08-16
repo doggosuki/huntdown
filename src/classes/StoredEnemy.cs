@@ -16,6 +16,7 @@ namespace Huntdown
         Maneater,
         BaboonHawk,
         ForestKeeper,
+        //Kiwi,
         Zombie,
         HauntedHarpist,
         PhantomPiper,

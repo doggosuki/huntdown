@@ -1,3 +1,16 @@
+### 1.6.5
+- Removed broken Cruiser reward because it would teleport you to the void if you got inside the car
+- Missions "Baboon Gang" and "Facility Keeper" are now enabled by default but they wont appear unless you have StarlancerAIFix mod installed
+- "Kiwi Bird" mission coming out soon
+- Added new reward tier "Execution", it is worth 500 by default and only has Kiwi Bird Egg as reward
+- Moved Maneater to Brutal reward pool
+- Ported missions from Huntdown Addon by InfiniteInteger:
+  - Lone Baboon Hawk (Easy, 1 Baboon Hawk. Requires StarlancerAIFix)
+  - Dynamic Duo (Hard, Thumper and Bunker Spider)
+  - Monstrous Den (Hard, 2 Bunker Spiders and 2 Hoarding Bugs)
+  - Mask Outbreak (Brutal, 8 Masked)
+  - Left 4 Mask 2 (Execution, 15 Masked)
+
 ### 1.6.4
 - Added support for "CodeRebirth" mod, you will now be able to get new missions related to the new enemies from it: "The Manor Lord", "Janitor" and "Cleaner Rivals"
 - Added support for "Surfaced" mod, you will be able to get Bell Crab as mission target

@@ -76,6 +76,12 @@ namespace Huntdown
             TogglePuppies,
             ToggleBaboonGang,
             ToggleFacilityKeeper,
+            //ToggleKiwi,
+            ToggleLoneHawk,
+            ToggleDuo,
+            ToggleDen,
+            ToggleOutbreak,
+            ToggleLeft4Dead,
             ToggleZombie,
             ToggleZombieCrew,
             ToggleZombieApocalypse,
@@ -112,6 +118,12 @@ namespace Huntdown
             WeightPuppies,
             WeightBaboonGang,
             WeightFacilityKeeper,
+            //WeightKiwi,
+            WeightLoneHawk,
+            WeightDuo,
+            WeightDen,
+            WeightOutbreak,
+            WeightLeft4Dead,
             WeightZombie,
             WeightZombieCrew,
             WeightZombieApocalypse,
@@ -133,10 +145,9 @@ namespace Huntdown
             RewardHigh,
             RewardExtreme,
             RewardBrutal,
+            RewardExecution,
 
             EnableToolRewards,
-            CruiserRewardEnabled,
-            CruiserRewardChance,
         }
 
         public static readonly ConfigurableSetting[] AllConfigurableSettings = new ConfigurableSetting[]
@@ -347,8 +358,8 @@ namespace Huntdown
                 Index = ConfigIndexes.ToggleBaboonGang,
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Baboon Gang Mission Enabled",
-                DefaultValue = false,
-                Description = new ConfigDescription("Whether the Baboon Gang (3 baboon hawks) can be assigned as the hunt target or not. (Disabled by default due to clients needing StarlancerAIFix for outside enemies to work inside.)")
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Baboon Gang (3 baboon hawks) can be assigned as the hunt target or not. (Will be target only if StarlancerAIFix mod is present.)")
             },
 
             new ConfigurableSetting
@@ -356,8 +367,62 @@ namespace Huntdown
                 Index = ConfigIndexes.ToggleFacilityKeeper,
                 Section = ConfigSections.Toggle.GetDescription(),
                 Key = "Facility Keeper Mission Enabled",
-                DefaultValue = false,
-                Description = new ConfigDescription("Whether the Facility Keeper can be assigned as the hunt target or not. (Disabled by default due to clients needing StarlancerAIFix for outside enemies to work inside.)")
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Facility Keeper can be assigned as the hunt target or not. (Will be target only if StarlancerAIFix mod is present.)")
+            },
+
+            //new ConfigurableSetting
+            //{
+            //    Index = ConfigIndexes.ToggleKiwi,
+            //    Section = ConfigSections.Toggle.GetDescription(),
+            //    Key = "Kiwi Bird Mission Enabled",
+            //    DefaultValue = true,
+            //    Description = new ConfigDescription("Whether the Kiwi Bird can be assigned as the hunt target or not. (Will be target only if StarlancerAIFix mod is present.)")
+            //},
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleLoneHawk,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Lone Hawk Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Lone Hawk can be assigned as the hunt target or not. (Will be target only if StarlancerAIFix mod is present.)")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleDuo,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Dynamic Duo Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Dynamic Duo (Thumper and Spider) can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleDen,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Monstrous Den Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Monstrous Den (2 Spiders and 2 Hoarders) can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleOutbreak,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Mask Outbreak Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Mask Outbreak (8 Masked people) can be assigned as the hunt target or not.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.ToggleLeft4Dead,
+                Section = ConfigSections.Toggle.GetDescription(),
+                Key = "Left 4 Mask 2 Mission Enabled",
+                DefaultValue = true,
+                Description = new ConfigDescription("Whether the Left 4 Mask 2 (15 Masked people) can be assigned as the hunt target or not.")
             },
 
             new ConfigurableSetting
@@ -659,6 +724,60 @@ namespace Huntdown
                 Description = new ConfigDescription("Higher value = more likely. The likelihood that the Facility Keeper will be the target.")
             },
 
+            //new ConfigurableSetting
+            //{
+            //    Index = ConfigIndexes.WeightKiwi,
+            //    Section = ConfigSections.Weight.GetDescription(),
+            //    Key = "Kiwi Bird Mission Weight",
+            //    DefaultValue = 5,
+            //    Description = new ConfigDescription("Higher value = more likely. The likelihood that the Kiwi Bird will be the target.")
+            //},
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightLoneHawk,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Lone Hawk Mission Weight",
+                DefaultValue = 70,
+                Description = new ConfigDescription("Higher value = more likely. The likelihood that the Lone Hawk will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightDuo,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Dynamic Duo Mission Weight",
+                DefaultValue = 30,
+                Description = new ConfigDescription("Higher value = more likely. The likelihood that the Dynamic Duo will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightDen,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Monstrous Den Mission Weight",
+                DefaultValue = 20,
+                Description = new ConfigDescription("Higher value = more likely. The likelihood that the Monstrous Den will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightOutbreak,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Mask Outbreak Mission Weight",
+                DefaultValue = 6,
+                Description = new ConfigDescription("Higher value = more likely. The likelihood that the Mask Outbreak will be the target.")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.WeightLeft4Dead,
+                Section = ConfigSections.Weight.GetDescription(),
+                Key = "Left 4 Mask 2 Mission Weight",
+                DefaultValue = 2,
+                Description = new ConfigDescription("Higher value = more likely. The likelihood that the Left 4 Mask 2 will be the target.")
+            },
+
             new ConfigurableSetting
             {
                 Index = ConfigIndexes.WeightZombie,
@@ -784,7 +903,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Easy Mission Reward",
                 DefaultValue = 50,
-                Description = new ConfigDescription("How much the scrap dropped from an easy mission is worth (Snare Flea, Hoarding Bug, Bell Crab).")
+                Description = new ConfigDescription("How much the scrap dropped from an easy mission is worth (Snare Flea, Hoarding Bug, Lone Hawk, Bell Crab).")
             },
 
             new ConfigurableSetting
@@ -802,7 +921,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Hard Mission Reward",
                 DefaultValue = 200,
-                Description = new ConfigDescription("How much the scrap dropped from a hard mission is worth (Bracken, Nutcracker, Bug Mafia, Infestation, Baboon Gang, Stabbin' Bros, Facility Keeper, Phantom Piper, Cleaner Rivals).")
+                Description = new ConfigDescription("How much the scrap dropped from a hard mission is worth (Bracken, Nutcracker, Bug Mafia, Infestation, Baboon Gang, Stabbin' Bros, Facility Keeper, Dynamic Duo, Monstrous Den, Phantom Piper, Cleaner Rivals).")
             },
 
             new ConfigurableSetting
@@ -811,7 +930,7 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Extreme Mission Reward",
                 DefaultValue = 300,
-                Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Good Boy, Last Month's Interns, Maneater, Last Year's Interns).")
+                Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Good Boy, Last Month's Interns, Last Year's Interns).")
             },
 
             new ConfigurableSetting
@@ -820,7 +939,17 @@ namespace Huntdown
                 Section = ConfigSections.Reward.GetDescription(),
                 Key = "Brutal Mission Reward",
                 DefaultValue = 400,
-                Description = new ConfigDescription("How much the scrap dropped from an extreme mission is worth (Giant Size: Upgraded, Big Trouble Little Enemies, Who let the puppies out?, Zombie Apocalypse, The Manor Lord).")
+                Description = new ConfigDescription("How much the scrap dropped from an brutal mission is worth (Giant Size: Upgraded, Big Trouble Little Enemies, Who let the puppies out?, Mask Outbreak, Maneater, Zombie Apocalypse, The Manor Lord).")
+            },
+
+            new ConfigurableSetting
+            {
+                Index = ConfigIndexes.RewardExecution,
+                Section = ConfigSections.Reward.GetDescription(),
+                Key = "Execution Mission Reward",
+                DefaultValue = 500,
+                //Description = new ConfigDescription("How much the scrap dropped from an execution mission is worth (Kiwi Bird, Left 4 Mask 2).")
+                Description = new ConfigDescription("How much the scrap dropped from an execution mission is worth (Left 4 Mask 2).")
             },
 
             new ConfigurableSetting
@@ -831,25 +960,6 @@ namespace Huntdown
                 DefaultValue = true,
                 Description = new ConfigDescription("If true, tool items will be included in reward pools.")
             },
-
-            new ConfigurableSetting
-            {
-                Index = ConfigIndexes.CruiserRewardEnabled,
-                Section = ConfigSections.Reward.GetDescription(),
-                Key = "Cruiser Reward Enabled",
-                DefaultValue = true,
-                Description = new ConfigDescription("If true, the Cruiser can appear as a mission reward.")
-            },
-
-            new ConfigurableSetting
-            {
-                Index = ConfigIndexes.CruiserRewardChance,
-                Section = ConfigSections.Reward.GetDescription(),
-                Key = "Cruiser Reward Chance",
-                DefaultValue = 5,
-                Description = new ConfigDescription("The percentage chance (0-100) of the Cruiser appearing as a reward.", new AcceptableValueRange<int>(0, 100))
-            },
-
         };
 
         public static ConfigEntryBase[] ConfigEntries = new ConfigEntryBase[AllConfigurableSettings.Length];

@@ -14,9 +14,6 @@ namespace Huntdown.Patches
     [HarmonyPatch(typeof(RoundManager))]
     internal class RoundManagerPatch
     {
-        private static GameObject _cruiserPrefab;  // Store the prefab
-        private static GameObject _secondaryCruiserPrefab; // Secondary object, i.e. light
-        private static bool _cruiserSpawnAttempted = false;
         private static Vector3 _lastEnemyKilledPosition; // Dynamically store position
 
 
@@ -88,8 +85,6 @@ namespace Huntdown.Patches
             {
                 _currentMission.End();
             }
-
-            LoadCruiserPrefab(); // Load the prefab ONCE
         }
 
         // Called after the vanilla game begins spawning enemies, intended to spawn the hunt target
@@ -120,8 +115,7 @@ namespace Huntdown.Patches
                 _currentMission.Start(ref ___currentLevel, ___allEnemyVents);
                 _logger.LogInfo("Mission '" + _currentMission.Name + "' generated successfully.");
             }
-            catch
-            (Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("There was an error when trying to generate the mission.\n" + ex.Message);
             }
@@ -215,115 +209,11 @@ namespace Huntdown.Patches
                         _terminalNode.displayText = "You have the 'display target' setting off in your configuration, so your mission cannot be displayed using this command.";
                     }
 
-
-                    _cruiserSpawnAttempted = false; // Reset flag
-
-                    bool cruiserEnabled = (bool)ConfigEntries[(int)ConfigIndexes.CruiserRewardEnabled].BoxedValue;
-                    int cruiserChance = (int)ConfigEntries[(int)ConfigIndexes.CruiserRewardChance].BoxedValue;
-
-                    // Create a list of allowed mission names.  Add/remove names as needed.
-                    List<string> allowedMissionNames = new List<string>()
-                    {
-                        "Bug Mafia",
-                        "Infestation",
-                        "Bunker Spider",
-                        "Bracken",
-                        "Thumper",
-                        "Nutcracker",
-                        "Masked",
-                        "Blunderbug",
-                        "Butler",
-                        "Stabbin' Bros",
-                        "Baboon Gang",
-                        "Zombie",
-                        "Haunted Harpist",
-                        "Phantom Piper",
-                        "Enforcer",
-                        "Cleaner Rivals",
-                        "Janitor",
-                    };
-
-                    // Check if the current mission's name is in the allowed list.
-                    bool isMissionAllowed = allowedMissionNames.Contains(_currentMission.Name);
-
-                    // Use the config values AND the mission name check
                     var rand = new System.Random();
-                    int chanceRoll = rand.Next(100);  // 0-99
-                    _logger.LogInfo("Reward chance roll: " + chanceRoll);
 
-                    // Only proceed if the mission is allowed, cruiser is enabled, AND the chance roll succeeds
-                    if (isMissionAllowed && cruiserEnabled && chanceRoll < cruiserChance && !_cruiserSpawnAttempted)
-                    {
-                        _cruiserSpawnAttempted = true; // Set the flag *inside* the if
-                        _logger.LogInfo("Attempting to spawn reward cruiser");
-                        StartOfRound sor = UnityEngine.Object.FindObjectOfType<StartOfRound>();
-                        if (sor != null)
-                        {
-                            AnimatedObjectTrigger magnetLever = null;
-                            AnimatedObjectTrigger[] triggers = UnityEngine.Object.FindObjectsOfType<AnimatedObjectTrigger>();
-                            foreach (AnimatedObjectTrigger trigger in triggers)
-                            {
-                                if (trigger.gameObject.name.Contains("MagnetLever")) //Best way to find correct trigger
-                                {
-                                    magnetLever = trigger;
-                                    break; // Exit the loop once found
-                                }
-                            }
-
-                            if (magnetLever != null && !sor.magnetOn)
-                            {
-                                _logger.LogInfo("Magnet is off, turning it on for Cruiser reward.");
-                                magnetLever.TriggerAnimation(sor.localPlayerController); // Turn on the magnet
-                            }
-
-                            // Simplified magnet check.  We just need to know if *anything* is attached.
-                            bool isMagnetOccupied = sor.isObjectAttachedToMagnet;
-
-                            // Get the magnetPoint transform.
-                            Transform magnetPoint = sor.magnetPoint;
-
-                            if (!isMagnetOccupied && magnetPoint != null)
-                            {
-                                // Spawn the Cruiser (adapted from VehicleSpawnPatch)
-                                if (_cruiserPrefab != null)
-                                {
-                                    _logger.LogInfo("Spawning reward.");
-                                    GameObject cruiserInstance = UnityEngine.Object.Instantiate(_cruiserPrefab, magnetPoint.position, Quaternion.Euler(0, -90, 0), RoundManager.Instance.VehiclesContainer);
-                                    NetworkObject netObj = cruiserInstance.GetComponent<NetworkObject>();
-                                    netObj.Spawn();
-
-                                    //Dont forget to spawn secondary prefab, aka light
-                                    GameObject secondaryInstance = UnityEngine.Object.Instantiate(_secondaryCruiserPrefab, magnetPoint.position, Quaternion.Euler(0, -90, 0), RoundManager.Instance.VehiclesContainer);
-                                    NetworkObject netObj2 = secondaryInstance.GetComponent<NetworkObject>();
-                                    netObj2.Spawn();
-
-                                    HUDManager.Instance.AddTextToChatOnServer("<color=purple>MISSION COMPLETED</color>\n<color=green>REWARD: </color>" + "<color=white>Cruiser</color>");
-                                    // Reset flags for next mission
-                                }
-                                else
-                                {
-                                    _logger.LogError("Cruiser prefab not found for reward spawn!");
-                                }
-                            }
-                            else
-                            {
-                                _logger.LogInfo("Magnet was occupied, not spawning reward!");
-                                // No reward this time.
-                                //Spawn normal reward that is inside of mission object
-                                SpawnMissionReward(rand);
-                            }
-                        }
-                        else
-                        {
-                            _logger.LogError("Start of round instance not found!");
-                        }
-                    }
-                    else
-                    {
-                        //Normal, non-cruiser reward
-                        _logger.LogInfo("Not spawning cruiser, spawning default reward");
-                        SpawnMissionReward(rand);
-                    }
+                    //Normal, non-cruiser reward
+                    _logger.LogInfo("Spawning default reward");
+                    SpawnMissionReward(rand);
 
                     _currentMission.End();
                 }
@@ -347,27 +237,6 @@ namespace Huntdown.Patches
 
             // Scrap on client
             _allScrapValue = scrapValues;
-        }
-
-        public static void LoadCruiserPrefab()
-        {
-            if (!_cruiserPrefab)
-            {
-                Terminal term = UnityEngine.Object.FindObjectOfType<Terminal>();
-                if (term == null) { _logger.LogWarning("Couldnt find terminal, not setting up cruiser prefabs for potential reward!"); return; };
-
-                foreach (BuyableVehicle vehicle in term.buyableVehicles)
-                {
-                    if (vehicle.vehicleDisplayName == "Cruiser")
-                    {
-                        _cruiserPrefab = vehicle.vehiclePrefab;
-                        _secondaryCruiserPrefab = vehicle.secondaryPrefab;
-                        _logger.LogInfo("Loaded up " + vehicle.vehicleDisplayName + " prefab.");
-                        return;
-                    }
-                }
-                _logger.LogWarning("Couldnt find any vehicle prefabs in the terminal named Cruiser!");
-            }
         }
 
         private static void SpawnMissionReward(System.Random rand)

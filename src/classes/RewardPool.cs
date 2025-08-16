@@ -4,12 +4,13 @@ namespace Huntdown
 {
     public enum RewardPoolKey
     {
-        SmallRewardPool,
+        EasyRewardPool,
         MediumRewardPool,
-        LargeRewardPool,
-        HugeRewardPool,
+        HardRewardPool,
+        ExtremeRewardPool,
         MaskRewardPool,
-        BrutalRewardPool
+        BrutalRewardPool,
+        ExecutionRewardPool
     }
 
     public class RewardPool

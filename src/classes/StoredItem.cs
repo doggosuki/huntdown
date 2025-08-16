@@ -106,6 +106,7 @@
         Sacrificer,
         SurfacedDieItem,
         Rusty,
+        BabyKiwiEgg,
     }
 
 

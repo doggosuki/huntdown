@@ -18,13 +18,14 @@ Your mission will be displayed to all members of your team in the chat once you 
 - Masked
 - Butler
 - Maneater
+- Baboon Hawk [(StarlancerAIFix)](https://thunderstore.io/c/lethal-company/p/AudioKnight/StarlancerAIFix)
 - <details><summary>A good boy inside the facility...? (Spoiler)</summary>An Eyeless Dog but indoors</details>
 - <details><summary>The Bug Mafia (Spoiler)</summary>A bunch of Hoarding Bugs with shovels</details>
 - <details><summary>Blunderbug (Spoiler)</summary>A Hoarding Bug with a shotgun (WIP)</details>
 - <details><summary>Infestation (Spoiler)</summary>A bunch of bugs (1 Bunker Spider, 2 Hoarding Bugs and 2 Snare Fleas in the same area)</details>
 - <details><summary>Last Month's Interns (Spoiler)</summary>Four Masked men coming to kill you</details>
-- <details><summary>Baboon Gang (Spoiler)</summary>Baboons but inside the facility</details
-- <details><summary>Facility Keeper (Spoiler)</summary>A small Forest Keeper lost in the facility. Due to it's small size, you will only need 5 shovel hits to take out this target</details>
+- <details><summary>Baboon Gang (StarlancerAIFix) (Spoiler)</summary>Baboons but inside the facility</details
+- <details><summary>Facility Keeper (StarlancerAIFix) (Spoiler)</summary>A small Forest Keeper lost in the facility. Due to it's small size, you will only need 5 shovel hits to take out this target</details>
 - <details><summary>Stabbin' Bros (Spoiler)</summary>A bunch of Knife wielding enemies (2 Butlers and 3 Hoarding Bugs with Knives)</details>
 - <details><summary>Giant Size: Upgraded (Spoiler)</summary>Company provided an experimental "Giant Size" to a random enemy (The target will be 2 times as big and have significantly more health)</details>
 - <details><summary>Big Trouble Little Enemies (Spoiler)</summary>Company provided an experimental "Tiny Size" to 15 random enemies (The targets will be 3 times smaller and will only take 1 shovel hit to be defeated)</details>
@@ -46,6 +47,7 @@ Your mission will be displayed to all members of your team in the chat once you 
 - <details><summary>Cleaner Rivals (CodeRebirth) (Spoiler)</summary>A Butler and Janitor competing to clean facility the fastest. Will you interrupt them or let them do their job?</details>
 
 **Supported Mods that can add extra mission targets or mission rewards:**
+- <details><summary>StarlancerAIFix</summary>Makes outside enemies work inside</details
 - <details><summary>LethalThings</summary>5 extra missions and bunch of new items for reward pools</details
 - <details><summary>Haunted Harpist</summary>4 extra missions and it's Ghost Plushie added to medium reward pool</details
 - <details><summary>CodeRebirth</summary>3 extra missions</details
